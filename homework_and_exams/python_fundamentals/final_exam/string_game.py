@@ -1,36 +1,50 @@
-initial_string = input()
-command = input()
-while command != "Done":
-    command = command.split()
-    operation = command[0]
-    if operation == "Change":
-        to_be_replaced, replacement_value = command[1], command[2]
-        initial_string = initial_string.replace(to_be_replaced, replacement_value)
-        print(initial_string)
-    elif operation == "Includes":
-        substring = command[1]
-        if substring in initial_string:
-            print(True)
-        elif substring not in initial_string:
-            print(False)
-    elif operation == "End":
-        substring = command[1]
-        length_of_substring = len(substring)
-        if initial_string[:length_of_substring] == substring:
-            print(True)
-        else:
-            print(False)
-    elif operation == "Uppercase":
-        initial_string = initial_string.upper()
-        print(initial_string)
-    elif operation == "FindIndex":
-        symbol = command[1]
-        for index in range(len(initial_string) - 1, -1, -1):
-            if initial_string[index] == symbol:
-                print(index)
-                break
-    elif operation == "Cut":
-        start_index, count = int(command[1]), int(command[2])
-        initial_string = initial_string[:start_index] + initial_string[start_index + count:]
-        print(initial_string)
-    command = input()
+def change(string: str, char: str, repl: str):
+    return string.replace(char, repl)
+
+
+def includes(string: str):
+    return string in string
+
+
+def end(s: str, string: str):
+    return s.endswith(string)
+
+
+def uppercase(string: str):
+    return string.upper()
+
+
+def find_index(string: str, char: str):
+    return string.index(char)
+
+
+def cut(string: str, start_index: int, length: int):
+    return string[start_index:start_index + length]
+
+
+string = input()
+
+while True:
+    data = input().strip()
+    if data == 'Done':
+        break
+    command, *tokens = data.split()
+    if command == 'Change':
+        char, repl = tokens
+        string = change(string, char, repl)
+        print(string)
+    elif command == 'Includes':
+        print(includes(*tokens))
+    elif command == 'End':
+        print(end(string, *tokens))
+    elif command == 'Uppercase':
+        string = uppercase(string)
+        print(string)
+    elif command == 'FindIndex':
+        print(find_index(string, *tokens))
+    elif command == 'Cut':
+        start_index, length = tokens
+        start_index = int(start_index)
+        length = int(length)
+        string = cut(string, start_index, length)
+        print(string)
